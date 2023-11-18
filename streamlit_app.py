@@ -63,7 +63,7 @@ recipes_data = {
 }
 
 # Load initial (random) recipe
-model = machinelearning(file_path="D:\Projects\HackaTUM2023\my-fresh\data\RAW_recipes.csv")
+model = machinelearning(file_path="/Users/serveshkhandwe/Desktop/hackatumlast/RAW_recipes.csv")
 st.session_state['previous_recipe'] = None
 recipe = model.generateOnereceipe()
 st.session_state['current_recipe'] = recipe
@@ -78,7 +78,7 @@ st.session_state['current_recipe'] = recipe
 
 previous, current, next = st.columns([1, 1.5, 1])
 
-with open("D:\Projects\HackaTUM2023\my-fresh\static\\food.jpg", "rb") as f:
+with open("/Users/serveshkhandwe/Desktop/hackatumlast/RAW_recipes.csv", "rb") as f:
         data = f.read()
         encoded = base64.b64encode(data)
 data = "data:image/png;base64," + encoded.decode("utf-8")
@@ -88,34 +88,74 @@ def goto_next():
 
     st.session_state['previous_recipe'] = st.session_state['current_recipe']
     st.session_state['current_recipe'] = model.generateOnereceipe()
-    if st.session_state['current_recipe'] == None:
+    if ~st.session_state['current_recipe']:
         return
     
     del prv_recipe
+    # with prv_canvas.container():
+    #     prv_recipe = card(key="previous",
+    #                     title=st.session_state['previous_recipe']['name'], 
+    #         text="Ingredients:" + st.session_state['previous_recipe']['ingredients'].join(',') + \
+    #             "\nInstructions: " + st.session_state['previous_recipe']["steps"],
+    #         image=data,
+    #         styles={
+    #             "card": {
+    #                 "width": "100%", # <- make the card use the width of its container, note that it will not resize the height of the card automatically
+    #                 "height": "600px" # <- if you want to set the card height to 300px
+    #             }
+    #         })
     with prv_canvas.container():
+        # ingredients_list = st.session_state['previous_recipe']['ingredients'].join(',')
+        formatted_ingredients = ', '.join(st.session_state['previous_recipe']['ingredients'])
+        formatted_instructions = '\n'.join(st.session_state['previous_recipe']["steps"])
+
         prv_recipe = card(key="previous",
-                        title=st.session_state['previous_recipe']['name'], 
-            text="Ingredients:" + st.session_state['previous_recipe']['ingredients'].join(',') + \
-                "\nInstructions: " + st.session_state['previous_recipe']["steps"].join(';\n'),
-            image=data,
-            styles={
-                "card": {
-                    "width": "100%", # <- make the card use the width of its container, note that it will not resize the height of the card automatically
-                    "height": "600px" # <- if you want to set the card height to 300px
-                }
-            })
+                      title=st.session_state['previous_recipe']['name'], 
+                      text=f"**Ingredients:**\n{formatted_ingredients}\n\n**Instructions:**\n{formatted_instructions}",
+                      image=data,
+                      styles={
+                          "card": {
+                              "width": "100%",
+                              "height": "auto",  # Adjusted to 'auto' for dynamic height
+                              "padding": "20px",  # Added padding for better layout
+                              "box-shadow": "0 4px 8px 0 rgba(0,0,0,0.2)"  # Optional: added shadow for better aesthetics
+                          },
+                          "title": {
+                              "font-size": "24px",
+                              "color": "#4a4a4a"
+                          },
+                          "text": {
+                              "font-size": "16px",
+                              "color": "#333333"
+                          }
+                      })
+
         
     with cur_canvas.container():
+
+        formatted_ingredients = ', '.join(st.session_state['current_receipe']['ingredients'])
+        formatted_instructions = '\n'.join(st.session_state['current_receipe']["steps"])
+
+
         cur_recipe = card(key="current", 
                         title=st.session_state['current_recipe']['name'], 
-            text="Ingredients:" + st.session_state['current_recipe']['ingredients'].join(',') + \
-                "\nInstructions: " + st.session_state['current_recipe']["steps"].join(';\n'),
+                        text=f"**Ingredients:**\n{formatted_ingredients}\n\n**Instructions:**\n{formatted_instructions}",
             image=data,
             styles={
                 "card": {
-                    "width": "100%", # <- make the card use the width of its container, note that it will not resize the height of the card automatically
-                    "height": "600px" # <- if you want to set the card height to 300px
-                }
+                              "width": "100%",
+                              "height": "auto",  # Adjusted to 'auto' for dynamic height
+                              "padding": "20px",  # Added padding for better layout
+                              "box-shadow": "0 4px 8px 0 rgba(0,0,0,0.2)"  # Optional: added shadow for better aesthetics
+                          },
+                          "title": {
+                              "font-size": "24px",
+                              "color": "#4a4a4a"
+                          },
+                          "text": {
+                              "font-size": "16px",
+                              "color": "#333333"
+                          }
             })
         
 def delete_recipe():
@@ -133,18 +173,29 @@ with previous:
     global prv_canvas
     prv_canvas = st.empty()
     with prv_canvas.container():
+        formatted_ingredients = ', '.join(st.session_state['previous_recipe']['ingredients'])
+        formatted_instructions = '\n'.join(st.session_state['previous_recipe']["steps"])
+
         prv_recipe = card(key="previous",
-                        title=st.session_state['previous_recipe']['name'] if st.session_state['previous_recipe'] else "", 
-            text="Ingredients:" + st.session_state['previous_recipe']['ingredients'].join(', ') + \
-                "\nInstructions: " + st.session_state['previous_recipe']["steps"].join(';\n') \
-                if st.session_state['previous_recipe'] else "",
-            image=data,
-            styles={
-                "card": {
-                    "width": "100%", # <- make the card use the width of its container, note that it will not resize the height of the card automatically
-                    "height": "600px" # <- if you want to set the card height to 300px
-                }
-            })
+                      title=st.session_state['previous_recipe']['name'], 
+                      text=f"**Ingredients:**\n{formatted_ingredients}\n\n**Instructions:**\n{formatted_instructions}",
+                      image=data,
+                      styles={
+                          "card": {
+                              "width": "100%",
+                              "height": "auto",  # Adjusted to 'auto' for dynamic height
+                              "padding": "20px",  # Added padding for better layout
+                              "box-shadow": "0 4px 8px 0 rgba(0,0,0,0.2)"  # Optional: added shadow for better aesthetics
+                          },
+                          "title": {
+                              "font-size": "24px",
+                              "color": "#4a4a4a"
+                          },
+                          "text": {
+                              "font-size": "16px",
+                              "color": "#333333"
+                          }
+                      })
 
 with current:
     # display the current recipe 
@@ -153,16 +204,29 @@ with current:
     cur_canvas = st.empty()
     
     with cur_canvas.container():
+        ormatted_ingredients = ', '.join(st.session_state['current_receipe']['ingredients'])
+        formatted_instructions = '\n'.join(st.session_state['current_receipe']["steps"])
+
+
         cur_recipe = card(key="current", 
                         title=st.session_state['current_recipe']['name'], 
-            text="Ingredients:" + st.session_state['current_recipe']['ingredients'].join(', ') + \
-                "\nInstructions: " + st.session_state['current_recipe']["steps"].join(';\n'),
+                        text=f"**Ingredients:**\n{formatted_ingredients}\n\n**Instructions:**\n{formatted_instructions}",
             image=data,
             styles={
                 "card": {
-                    "width": "100%", # <- make the card use the width of its container, note that it will not resize the height of the card automatically
-                    "height": "600px" # <- if you want to set the card height to 300px
-                }
+                              "width": "100%",
+                              "height": "auto",  # Adjusted to 'auto' for dynamic height
+                              "padding": "20px",  # Added padding for better layout
+                              "box-shadow": "0 4px 8px 0 rgba(0,0,0,0.2)"  # Optional: added shadow for better aesthetics
+                          },
+                          "title": {
+                              "font-size": "24px",
+                              "color": "#4a4a4a"
+                          },
+                          "text": {
+                              "font-size": "16px",
+                              "color": "#333333"
+                          }
             })
 
 with next:
