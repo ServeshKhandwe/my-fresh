@@ -1,6 +1,7 @@
 import base64
 import streamlit as st
 from streamlit_card import card
+from machinelearning import machinelearning
 
 # # Sample data
 # ingredients = ["Tomato", "Chicken", "Basil", "Milk"]
@@ -61,6 +62,12 @@ recipes_data = {
     },
 }
 
+# Load initial (random) recipe
+model = machinelearning(file_path="D:\Projects\HackaTUM2023\my-fresh\data\RAW_recipes.csv")
+st.session_state['previous_recipe'] = None
+recipe = model.generateOnereceipe()
+st.session_state['current_recipe'] = recipe
+
 # Display sample recipes
 # for recipe_name, recipe_details in recipes_data.items():
 #     print(f"Recipe: {recipe_name}")
@@ -69,15 +76,7 @@ recipes_data = {
 #     print(recipe_details["Instructions"])
 #     print("\n" + "="*30 + "\n")
 
-
 previous, current, next = st.columns([1, 1.5, 1])
-
-st.session_state.current_idx = 1
-length = len(recipes_data)
-
-st.session_state['previous_recipe'] = list(recipes_data.values())[st.session_state.current_idx-1]
-st.session_state['current_recipe'] = list(recipes_data.values())[st.session_state.current_idx]
-st.session_state['next_recipe'] = list(recipes_data.values())[st.session_state.current_idx+1]
 
 with open("D:\Projects\HackaTUM2023\my-fresh\static\\food.jpg", "rb") as f:
         data = f.read()
@@ -85,24 +84,16 @@ with open("D:\Projects\HackaTUM2023\my-fresh\static\\food.jpg", "rb") as f:
 data = "data:image/png;base64," + encoded.decode("utf-8")
 
 def goto_next():
-    print(st.session_state.current_idx)
-    
-    st.session_state.current_idx += 1
-    print(st.session_state.current_idx)
-    current_idx = st.session_state.current_idx
-
-    if current_idx == length:
-        return
-    
     # Finetune the recommendation algorithm and make new recommendation
 
-    st.session_state['previous_recipe'] = list(recipes_data.values())[current_idx-1]
-    st.session_state['current_recipe'] = list(recipes_data.values())[current_idx]
-    st.session_state['next_recipe'] = list(recipes_data.values())[current_idx+1]
+    st.session_state['previous_recipe'] = st.session_state['current_recipe']
+    st.session_state['current_recipe'] = model.generateOnereceipe()
+    if ~st.session_state['current_recipe']:
+        return
     
-    prv_canvas.empty()
+    del prv_recipe
     with prv_canvas.container():
-        prv_recipe = card(key="previous"+str(current_idx),
+        prv_recipe = card(key="previous",
                         title="previous recipe", 
             text=st.session_state['previous_recipe']["Instructions"],
             image=data,
@@ -140,7 +131,7 @@ with previous:
     global prv_canvas
     prv_canvas = st.empty()
     with prv_canvas.container():
-        prv_recipe = card(key="previous"+str(st.session_state.current_idx),
+        prv_recipe = card(key="previous"+str(st.session_state.index),
                         title="previous recipe", 
             text=st.session_state['previous_recipe']["Instructions"],
             image=data,
@@ -158,7 +149,7 @@ with current:
     cur_canvas = st.empty()
     
     with cur_canvas.container():
-        cur_recipe = card(key="current"+str(st.session_state.current_idx), 
+        cur_recipe = card(key="current"+str(st.session_state.index), 
                         title="current recipe", 
             text=st.session_state['current_recipe']["Instructions"],
             image=data,
