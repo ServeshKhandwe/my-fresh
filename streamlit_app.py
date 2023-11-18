@@ -88,7 +88,7 @@ def goto_next():
 
     st.session_state['previous_recipe'] = st.session_state['current_recipe']
     st.session_state['current_recipe'] = model.generateOnereceipe()
-    if ~st.session_state['current_recipe']:
+    if st.session_state['current_recipe'] == None:
         return
     
     del prv_recipe
@@ -96,7 +96,7 @@ def goto_next():
         prv_recipe = card(key="previous",
                         title=st.session_state['previous_recipe']['name'], 
             text="Ingredients:" + st.session_state['previous_recipe']['ingredients'].join(',') + \
-                "\nInstructions: " + st.session_state['previous_recipe']["steps"],
+                "\nInstructions: " + st.session_state['previous_recipe']["steps"].join(';\n'),
             image=data,
             styles={
                 "card": {
@@ -107,9 +107,9 @@ def goto_next():
         
     with cur_canvas.container():
         cur_recipe = card(key="current", 
-                        title=st.session_state['current_recipe'], 
+                        title=st.session_state['current_recipe']['name'], 
             text="Ingredients:" + st.session_state['current_recipe']['ingredients'].join(',') + \
-                "\nInstructions: " + st.session_state['current_recipe']["steps"],
+                "\nInstructions: " + st.session_state['current_recipe']["steps"].join(';\n'),
             image=data,
             styles={
                 "card": {
@@ -135,8 +135,8 @@ with previous:
     with prv_canvas.container():
         prv_recipe = card(key="previous",
                         title=st.session_state['previous_recipe']['name'] if st.session_state['previous_recipe'] else "", 
-            text="Ingredients:" + st.session_state['previous_recipe']['ingredients'].join(',') + \
-                "\nInstructions: " + st.session_state['previous_recipe']["steps"] \
+            text="Ingredients:" + st.session_state['previous_recipe']['ingredients'].join(', ') + \
+                "\nInstructions: " + st.session_state['previous_recipe']["steps"].join(';\n') \
                 if st.session_state['previous_recipe'] else "",
             image=data,
             styles={
@@ -154,9 +154,9 @@ with current:
     
     with cur_canvas.container():
         cur_recipe = card(key="current", 
-                        title=st.session_state['current_recipe'], 
-            text="Ingredients:" + st.session_state['current_recipe']['ingredients'].join(',') + \
-                "\nInstructions: " + st.session_state['current_recipe']["steps"],
+                        title=st.session_state['current_recipe']['name'], 
+            text="Ingredients:" + st.session_state['current_recipe']['ingredients'].join(', ') + \
+                "\nInstructions: " + st.session_state['current_recipe']["steps"].join(';\n'),
             image=data,
             styles={
                 "card": {
