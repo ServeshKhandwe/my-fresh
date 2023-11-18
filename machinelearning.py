@@ -32,6 +32,10 @@ class machinelearning:
         recommended_indices = [i for i in recommended_indices if i not in liked_indices]
         return self.recipes_df.iloc[recommended_indices]
 
+    def generateOnereceipe():
+        recipe=load_data()
+        return recipe.sample(1)
+
 def main():
     file_path = '/Users/serveshkhandwe/Desktop/hacaktumtry/RAW_recipes.csv'  # Or use st.text_input to get user input
     recommender = RecipeRecommender(file_path)
