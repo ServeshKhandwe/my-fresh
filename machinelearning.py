@@ -78,20 +78,21 @@ class machinelearning:
         
         if self.first==True:
             recipe=self.load_data()
-            return recipe.sample(n=1).iloc[0].to_dict()
-            
+            sample = recipe.sample(n=1).iloc[0]
+            selected_columns = ['name', 'steps', 'ingredients']
+            dict = {col: sample[col] for col in selected_columns}
+            return dict
         else:
+        
             model, tfidf_vectorizer = self.train_model(list(st.session_state.liked_recipes))
             recommendations = self.get_recommendations(model, tfidf_vectorizer, list(st.session_state.liked_recipes))
             for index, row in recommendations.iterrows():
-                recommended_recipe = f"{row['name']} (ID: {row['id']})"
-                name, id_str = recommended_recipe.split(" (ID: ")
-                id = id_str[:-1] 
-                recipe_dict = {"name": name, "id": id}
-                
-                return recipe_dict
+                recommended_recipe = row.to_dict()
+                selected_columns = ['name', 'steps', 'ingredients']
+                recommended_recipe = {col: row[col] for col in selected_columns}
+                return recommended_recipe
+
             
-        
         
 
 
