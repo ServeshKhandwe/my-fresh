@@ -31,6 +31,10 @@ def get_recommendations(recipes_df, model, tfidf_vectorizer, liked_recipes):
     recommended_indices = [i for i in recommended_indices if i not in liked_indices]
     return recipes_df.iloc[recommended_indices]
 
+def returnOnereceipe():
+    recipe_df=load_data
+    return recipe_df.sample(1)
+    
 def main():
     st.title("Recipe Recommendation System")
 
