@@ -33,22 +33,22 @@ class machinelearning:
         # if st.button("Submit Feedback") and st.session_state.next_pressed:
         #     st.write("You have liked these recipes (IDs):", st.session_state.liked_recipes)
 
-        if len(st.session_state.liked_recipes) >= 5:
+        # if len(st.session_state.liked_recipes) >= 5:
                 
-            model, tfidf_vectorizer = self.train_model(list(st.session_state.liked_recipes))
-            recommendations = self.get_recommendations(model, tfidf_vectorizer, list(st.session_state.liked_recipes))
+        #     model, tfidf_vectorizer = self.train_model(list(st.session_state.liked_recipes))
+        #     recommendations = self.get_recommendations(model, tfidf_vectorizer, list(st.session_state.liked_recipes))
                 
 
-            recommended_recipes_array = []
-            for index, row in recommendations.iterrows():
-                recommended_recipe = f"{row['name']} (ID: {row['id']})"
-                st.text(recommended_recipe)
-                recommended_recipes_array.append(recommended_recipe)
-        else:
-            st.write("Please like a total of 5 recipes to train the model.")
+        #     recommended_recipes_array = []
+        #     for index, row in recommendations.iterrows():
+        #         recommended_recipe = f"{row['name']} (ID: {row['id']})"
+        #         st.text(recommended_recipe)
+        #         recommended_recipes_array.append(recommended_recipe)
+        # else:
+        #     st.write("Please like a total of 5 recipes to train the model.")
 
-        if not st.session_state.next_pressed:
-            st.experimental_rerun()
+        # if not st.session_state.next_pressed:
+        #     st.experimental_rerun()
 
     @st.cache(allow_output_mutation=True)
     def load_data(self):
