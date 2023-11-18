@@ -59,6 +59,11 @@ recipes_data = {
         "Instructions": "1. Saute spinach, mushrooms, and onions.  \n2. Beat eggs and pour over the vegetables.\n3. Sprinkle feta cheese on top. Cook until eggs are set.",
     },
 }
+for recipe_name, recipe_info in recipes_data.items():
+    print(f"{recipe_name} Instructions:")
+    print(recipe_info["Instructions"])
+    print("\n")
+
 
 # Display sample recipes
 # for recipe_name, recipe_details in recipes_data.items():
@@ -69,7 +74,7 @@ recipes_data = {
 #     print("\n" + "="*30 + "\n")
 
 
-previous, current, next = st.columns([1, 1.5, 1])
+previous, current, next = st.columns([3, 6, 3])
 
 current_idx = 1
 length = len(recipes_data)
@@ -147,6 +152,9 @@ with current:
                     "height": "600px" # <- if you want to set the card height to 300px
                 }
             })
+        
+        if st.button("Next", key="gotonext", help="Go to the next recipe"):
+            goto_next()
 
 with next:
     # display the recipe after the current one in the recipe list
@@ -165,11 +173,22 @@ with next:
     #                             "height": "600px" # <- if you want to set the card height to 300px
     #                         }
     #                     })
-
-    st.button("next", key="gotonext", 
-          on_click=goto_next)
-        
-
-
+    
+ if current_idx < len(recipes_data) - 1:
+        global nxt_canvas
+        nxt_canvas = st.empty()
+        with nxt_canvas.container():
+            nxt_recipe = card(key="next",
+                              title="Next Recipe",
+                              text="Click 'Next' to view the ingredients.",                              
+                              styles={
+                                  "card": {
+                                      "width": "100%",
+                                      "height": "600px"
+                                  }
+                              })
+            
+            if st.button("next", key="gotonext", on_click=goto_next, help="Go to the next recipe"):
+                goto_next()
 
 
