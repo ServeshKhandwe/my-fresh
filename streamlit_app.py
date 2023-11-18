@@ -1,4 +1,5 @@
 import streamlit as st
+from streamlit_card import card
 
 # Sample data
 ingredients = ["Tomato", "Chicken", "Basil", "Milk"]
@@ -36,26 +37,53 @@ with right_col:
 # random list at first
 # ranked by recommendation algorithm
 
-previous_recipe, current_recipe, next_recipe = st.columns(3)
-current_idx = 0
+previous_recipe, current_recipe, next_recipe = st.columns([1, 1.5, 1])
+current_idx = 1
 length = 10
 
 with previous_recipe:
     # display the recipe before the current one in the recipe list
     # recipes[current_idx-1]
     # with a smaller size
-    if current_idx > 0:
-        st.write("")
+    # with st.expander("previous recipe", True):
+    #     if current_idx > 0:
+    #         st.write("")
+    prv_recipe = card(key="previous",
+                      title="previous recipe", 
+         text="This is the previous recipe",
+         styles={
+            "card": {
+                "width": "100%", # <- make the card use the width of its container, note that it will not resize the height of the card automatically
+                "height": "600px" # <- if you want to set the card height to 300px
+            }
+        })
 
 with current_recipe:
     # display the current recipe 
     # with the normal size
-    st.write("")
+    cur_recipe = card(key="current", 
+                      title="current recipe", 
+         text="This is the current recipe",
+         styles={
+            "card": {
+                "width": "100%", # <- make the card use the width of its container, note that it will not resize the height of the card automatically
+                "height": "600px" # <- if you want to set the card height to 300px
+            }
+        })
 
 with next_recipe:
     # display the recipe after the current one in the recipe list
     # with a smaller size as 'previous_recipe'
+    
     if current_idx < length - 1:
-        st.write("")
+        nxt_recipe = card(key="next",
+                          title="next recipe", 
+                          text="This is the next recipe",
+                          styles={
+                        "card": {
+                            "width": "100%", # <- make the card use the width of its container, note that it will not resize the height of the card automatically
+                            "height": "600px" # <- if you want to set the card height to 300px
+                        }
+                    })
 
 
