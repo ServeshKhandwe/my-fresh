@@ -94,8 +94,9 @@ def goto_next():
     del prv_recipe
     with prv_canvas.container():
         prv_recipe = card(key="previous",
-                        title="previous recipe", 
-            text=st.session_state['previous_recipe']["Instructions"],
+                        title=st.session_state['previous_recipe']['name'], 
+            text="Ingredients:" + st.session_state['previous_recipe']['ingredients'].join(',') + \
+                "\nInstructions: " + st.session_state['previous_recipe']["steps"],
             image=data,
             styles={
                 "card": {
@@ -105,9 +106,10 @@ def goto_next():
             })
         
     with cur_canvas.container():
-        cur_recipe = card(key="current"+str(current_idx), 
-                        title="current recipe", 
-            text=st.session_state['current_recipe']["Instructions"],
+        cur_recipe = card(key="current", 
+                        title=st.session_state['current_recipe'], 
+            text="Ingredients:" + st.session_state['current_recipe']['ingredients'].join(',') + \
+                "\nInstructions: " + st.session_state['current_recipe']["steps"],
             image=data,
             styles={
                 "card": {
@@ -131,9 +133,11 @@ with previous:
     global prv_canvas
     prv_canvas = st.empty()
     with prv_canvas.container():
-        prv_recipe = card(key="previous"+str(st.session_state.index),
-                        title="previous recipe", 
-            text=st.session_state['previous_recipe']["Instructions"],
+        prv_recipe = card(key="previous",
+                        title=st.session_state['previous_recipe']['name'] if st.session_state['previous_recipe'] else "", 
+            text="Ingredients:" + st.session_state['previous_recipe']['ingredients'].join(',') + \
+                "\nInstructions: " + st.session_state['previous_recipe']["steps"] \
+                if st.session_state['previous_recipe'] else "",
             image=data,
             styles={
                 "card": {
@@ -149,11 +153,11 @@ with current:
     cur_canvas = st.empty()
     
     with cur_canvas.container():
-        cur_recipe = card(key="current"+str(st.session_state.index), 
-                        title="current recipe", 
-            text=st.session_state['current_recipe']["Instructions"],
+        cur_recipe = card(key="current", 
+                        title=st.session_state['current_recipe'], 
+            text="Ingredients:" + st.session_state['current_recipe']['ingredients'].join(',') + \
+                "\nInstructions: " + st.session_state['current_recipe']["steps"],
             image=data,
-            url="https://github.com/gamcoh/st-card",
             styles={
                 "card": {
                     "width": "100%", # <- make the card use the width of its container, note that it will not resize the height of the card automatically
