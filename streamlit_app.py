@@ -85,5 +85,11 @@ with next_recipe:
                             "height": "600px" # <- if you want to set the card height to 300px
                         }
                     })
+        
+def goto_next():
+    current_idx += 1
+
+st.button("next", key="next", 
+          on_click=goto_next)
 
 
