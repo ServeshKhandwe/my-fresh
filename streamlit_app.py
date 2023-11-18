@@ -31,3 +31,31 @@ with right_col:
         st.write(item)
 
 # Recipe logic and display would go here
+
+# give me a list of recipes!
+# random list at first
+# ranked by recommendation algorithm
+
+previous_recipe, current_recipe, next_recipe = st.columns(3)
+current_idx = 0
+length = 10
+
+with previous_recipe:
+    # display the recipe before the current one in the recipe list
+    # recipes[current_idx-1]
+    # with a smaller size
+    if current_idx > 0:
+        st.write("")
+
+with current_recipe:
+    # display the current recipe 
+    # with the normal size
+    st.write("")
+
+with next_recipe:
+    # display the recipe after the current one in the recipe list
+    # with a smaller size as 'previous_recipe'
+    if current_idx < length - 1:
+        st.write("")
+
+
