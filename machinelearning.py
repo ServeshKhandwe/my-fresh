@@ -72,8 +72,12 @@ def main():
             model, tfidf_vectorizer = recommender.train_model(list(st.session_state.liked_recipes))
             recommendations = recommender.get_recommendations(model, tfidf_vectorizer, list(st.session_state.liked_recipes))
             st.write("Recommended Recipes based on your likes:")
+
+            recommended_recipes_array = []
             for index, row in recommendations.iterrows():
-                st.text(f"{row['name']} (ID: {row['id']})")
+               recommended_recipe = f"{row['name']} (ID: {row['id']})"
+                st.text(recommended_recipe)
+                recommended_recipes_array.append(recommended_recipe)
         else:
             st.write("Please like a total of 5 recipes to train the model.")
 
