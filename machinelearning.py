@@ -85,7 +85,11 @@ class machinelearning:
             recommendations = self.get_recommendations(model, tfidf_vectorizer, list(st.session_state.liked_recipes))
             for index, row in recommendations.iterrows():
                 recommended_recipe = f"{row['name']} (ID: {row['id']})"
-                return recommended_recipe
+                name, id_str = recommended_recipe.split(" (ID: ")
+                id = id_str[:-1] 
+                recipe_dict = {"name": name, "id": id}
+                
+                return recipe_dict
             
         
         
