@@ -82,7 +82,7 @@ with previous_recipe:
     #         st.write("")
     prv_recipe = card(key="previous",
                       title="previous recipe", 
-         text="This is the previous recipe",
+         text=list(recipes_data.values())[current_idx-1]["Instructions"],
          styles={
             "card": {
                 "width": "100%", # <- make the card use the width of its container, note that it will not resize the height of the card automatically
@@ -95,7 +95,7 @@ with current_recipe:
     # with the normal size
     cur_recipe = card(key="current", 
                       title="current recipe", 
-         text="This is the current recipe",
+         text=list(recipes_data.values())[current_idx]["Instructions"],
          styles={
             "card": {
                 "width": "100%", # <- make the card use the width of its container, note that it will not resize the height of the card automatically
@@ -110,7 +110,7 @@ with next_recipe:
     if current_idx < length - 1:
         nxt_recipe = card(key="next",
                           title="next recipe", 
-                          text="This is the next recipe",
+                          text=list(recipes_data.values())[current_idx+1]["Instructions"],
                           styles={
                         "card": {
                             "width": "100%", # <- make the card use the width of its container, note that it will not resize the height of the card automatically
@@ -119,9 +119,10 @@ with next_recipe:
                     })
         
 def goto_next():
+    global current_idx
     current_idx += 1
 
-st.button("next", key="next", 
+st.button("next", key="gotonext", 
           on_click=goto_next)
 
 
